@@ -5,16 +5,12 @@ const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("new-quote");
 const loader = document.getElementById("loader");
 
-// show Loading
-function loading() {
-  // show loader
+function showLoadingSpinner() {
   loader.hidden = false;
-  // hide quoteContainer
   quoteContainer.hidden = true;
 }
 
-// Hide Loading
-function complete() {
+function removeLoadingSpinner() {
   if (!loader.hidden) {
     quoteContainer.hidden = false;
     loader.hidden = true;
@@ -23,8 +19,7 @@ function complete() {
 
 // Get Quote From API
 async function getQuote() {
-  // show loading until we get api response
-  loading();
+  showLoadingSpinner();
 
   // some open api cannot be connected from local host. to avoid this, call proxy -> api
   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
@@ -47,8 +42,7 @@ async function getQuote() {
       quoteText.classList.remove("long-quote");
     }
     quoteText.innerText = data.quoteText;
-    // stop loader and show quote
-    complete();
+    removeLoadingSpinner();
   } catch (error) {
     getQuote();
   }

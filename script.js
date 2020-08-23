@@ -3,9 +3,29 @@ const quoteText = document.getElementById("quote");
 const authorText = document.getElementById("author");
 const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("new-quote");
+const loader = document.getElementById("loader");
+
+// show Loading
+function loading() {
+  // show loader
+  loader.hidden = false;
+  // hide quoteContainer
+  quoteContainer.hidden = true;
+}
+
+// Hide Loading
+function complete() {
+  if (!loader.hidden) {
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+  }
+}
 
 // Get Quote From API
 async function getQuote() {
+  // show loading until we get api response
+  loading();
+
   // some open api cannot be connected from local host. to avoid this, call proxy -> api
   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
   const apiUrl =
@@ -27,6 +47,8 @@ async function getQuote() {
       quoteText.classList.remove("long-quote");
     }
     quoteText.innerText = data.quoteText;
+    // stop loader and show quote
+    complete();
   } catch (error) {
     getQuote();
   }
